@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import { UserAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { getFriendlyFirebaseError } from '../utils/FirebaseErrors.js'
 
 const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -17,12 +18,13 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
+
         try {
             // Sign up logic here
             await createUser(email, password);
             navigate('/account')
         } catch (e) {
-            setError(e.message)
+            setError(getFriendlyFirebaseError(e.code));
             console.log(e.message)
         }
     }
@@ -73,6 +75,14 @@ const SignUp = () => {
 
             {/* Sign Up Button */}
             <div className="py-4">
+
+                {/* Error Message */}
+                {error && (
+                    <div className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md my-4'>
+                        <p className='text-sm font-medium'>{error}</p>
+                    </div>
+                )}
+
                 <button
                     type="submit"
                     className="px-4 py-2 bg-sky-500 text-white font-medium rounded-md hover:bg-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"

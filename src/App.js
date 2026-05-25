@@ -17,9 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SignIn />} />
           <Route path="/sign-up" element={
-            <ProtectedRoute>
               <SignUp />
-            </ProtectedRoute>
           } />
           <Route path="/account" element={
             <ProtectedRoute>
